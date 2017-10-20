@@ -29,7 +29,7 @@ dependencies {
 
     ...
 
-    compile 'io.github.go_pesa:gopesa:0.0.1@aar'
+    compile 'io.github.go_pesa:gopesa:0.0.3@aar'
 
     ...
 
