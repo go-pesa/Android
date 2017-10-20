@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 26
@@ -29,4 +31,54 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
     compile project(':mgopesa')
+}
+
+group = 'io.github.go_pesa'
+version = '0.0.1'
+
+
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+task generateJavaDocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath()
+            .join(File.pathSeparator))
+}
+
+task generateJavaDocsJar(type: Jar) {
+    from generateJavaDocs.destinationDir
+    classifier 'javadoc'
+}
+generateJavaDocsJar.dependsOn generateJavaDocs
+
+bintray {
+    user = "cmosh"
+    key = "e096766f113502d7fec05000966bd8b8d0f82495"
+    pkg {
+        repo = 'android'
+        name = 'gopesa'
+        userOrg = 'go-pesa'
+        desc = 'M-Pesa API client library'
+        vcsUrl = 'https://github.com/go-pesa/Android.git'
+        websiteUrl = 'https://go-pesa.github.io/docs'
+        licenses = ['Apache-2.0']
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = "M-Pesa API client library"
+            gpg {
+                sign = false //Determines whether to GPG sign the files. The default is false
+            }
+
+        }
+        configurations = ['archives']
+    }
+
+    artifacts {
+        archives generateJavaDocsJar
+        archives generateSourcesJar
+    }
 }
