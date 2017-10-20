@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Android</string>
+    <string name="consumer_secret">F5LNb9yr81HdQ3My</string>
+    <string name="consumer_key">RFbrS9L4XxYys9961DpQB8keKsPj5SD9</string>
 </resources>

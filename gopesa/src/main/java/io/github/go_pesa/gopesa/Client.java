@@ -1,13 +1,103 @@
 package io.github.go_pesa.gopesa;
 
 
+import android.content.Context;
+import android.text.TextUtils;
+
 /**
  * Created by clive on 19/10/17.
  */
 
-
 public class Client {
-    public static String test (){
-        return mgopesa.Mgopesa.popo();
+
+    private mgopesa.Client client;
+    private Context context;
+    private String key;
+    private String secret;
+    private String passkey;
+    private Long shortCode;
+    private String msisdn;
+    private String productionURL;
+    private String transactionCallback;
+
+    private void getContextValues(){
+        this.key  = this.context.getString(R.string.consumer_key);
+        this.secret = this.context.getString(R.string.consumer_secret);
+        this.passkey = this.context.getString(R.string.pass_key);
+        this.msisdn = this.context.getString(R.string.msisdn);
+        this.productionURL = this.context.getString(R.string.production_url);
+        this.transactionCallback = this.context.getString(R.string.transaction_callback);
+        if (!TextUtils.isEmpty(this.context.getString(R.string.short_code)))
+        this.shortCode = Long.parseLong(this.context.getString(R.string.short_code));
     }
+
+    public Client(Context context)  throws Exception {
+        this.context = context;
+        getContextValues();
+        this.client =  new mgopesa.Client();
+
+        if(TextUtils.isEmpty(this.key) || TextUtils.isEmpty(this.secret) )
+        {
+            throw new Exception("Must fill both consumer secret and key in mpesa.xml");
+
+        }else{
+
+            if(!TextUtils.isEmpty(this.transactionCallback)){
+                client.setTransactionCallback(this.transactionCallback);
+            }
+            if( !TextUtils.isEmpty(this.passkey) &&
+                this.shortCode != null &&
+                !TextUtils.isEmpty(this.productionURL) &&
+                !TextUtils.isEmpty(this.msisdn)){
+                client.setShortCode(this.shortCode);
+                client.setPassKey(this.passkey);
+                client.setMSISDN(this.msisdn);
+                client.setProductionURL(this.productionURL);
+            }
+            client.create(this.key,this.secret);
+        }
+
+
+    }
+
+
+    public Client(String key, String secret){
+        this.client =  new mgopesa.Client();
+        client.create(key, secret);
+    }
+
+    public Client(String key, String secret, String transactionCallback){
+        this.client =  new mgopesa.Client();
+        client.setTransactionCallback(transactionCallback);
+        client.create(key, secret);
+    }
+
+    public Client(
+            String key,
+            String secret,
+            long shortCode,
+            String passkey,
+            String MSISDN,
+            String productionURL,
+            String transactionCallback )
+    {
+        this.client =  new mgopesa.Client();
+        client.setShortCode(shortCode);
+        client.setPassKey(passkey);
+        client.setMSISDN(MSISDN);
+        client.setProductionURL(productionURL);
+        client.setTransactionCallback(transactionCallback);
+        client.create(key, secret);
+    }
+
+
+    public mgopesa.StkResponse stkPush(long amount, String phoneNumber, String reference, String description){
+      return this.client.stkPush(amount,phoneNumber,reference,description);
+    }
+
+    public mgopesa.StkResponse stkResponse(String checkoutRequestID){
+        return this.client.stkPushQuery(checkoutRequestID);
+    }
+
+
 }

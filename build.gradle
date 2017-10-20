@@ -20,7 +20,11 @@ plugins {
 allprojects {
     repositories {
         jcenter()
+//        flatDir {
+//            dirs 'libs'
+//        }
     }
+
 }
 
 

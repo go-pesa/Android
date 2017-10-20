@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--These two fields are compulsory for test and production-->
+    <string name="consumer_key"></string>
+    <string name="consumer_secret"></string>
+
+    <!--These fields are compulsory for production, do not set them when using test credentials  -->
+    <string name="production_url"></string>
+    <string name="short_code"></string>
+    <string name="pass_key"></string>
+    <string name="msisdn"></string>
+
+    <!--This is optional for both test and production, can be routed to firebase if you don't have a test server-->
+    <string name="transaction_callback"></string>
+
+</resources>

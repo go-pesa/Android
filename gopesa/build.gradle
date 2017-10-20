@@ -34,7 +34,7 @@ dependencies {
 }
 
 group = 'io.github.go_pesa'
-version = '0.0.1'
+version = '0.0.3'
 
 
 task generateSourcesJar(type: Jar) {
