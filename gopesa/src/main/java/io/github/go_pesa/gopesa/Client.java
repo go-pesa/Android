@@ -3,6 +3,11 @@ package io.github.go_pesa.gopesa;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
+
+import java.util.Map;
+
+import mgopesa.StkResponse;
 
 /**
  * Created by clive on 19/10/17.
@@ -20,6 +25,7 @@ public class Client {
     private String productionURL;
     private String transactionCallback;
 
+
     private void getContextValues(){
         this.key  = this.context.getString(R.string.consumer_key);
         this.secret = this.context.getString(R.string.consumer_secret);
@@ -35,6 +41,8 @@ public class Client {
         this.context = context;
         getContextValues();
         this.client =  new mgopesa.Client();
+
+
 
         if(TextUtils.isEmpty(this.key) || TextUtils.isEmpty(this.secret) )
         {
@@ -91,13 +99,18 @@ public class Client {
     }
 
 
-    public mgopesa.StkResponse stkPush(long amount, String phoneNumber, String reference, String description){
-      return this.client.stkPush(amount,phoneNumber,reference,description);
+    public Map<String, Object> stkPush(long amount, String phoneNumber, String reference, String description){
+
+      StkResponse response =  this.client.stkPush(amount,phoneNumber,reference,description);
+      return Mapper.map(response);
+
     }
 
-    public mgopesa.StkResponse stkResponse(String checkoutRequestID){
-        return this.client.stkPushQuery(checkoutRequestID);
-    }
+    public Map<String, Object> stkResponse(String checkoutRequestID){
 
+        StkResponse response = this.client.stkPushQuery(checkoutRequestID);
+        return Mapper.map(response);
+
+    }
 
 }

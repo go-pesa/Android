@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 5
+        versionName "0.0.5"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
@@ -29,12 +33,18 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
+    compile('com.fasterxml:jackson-xml-databind:0.6.2'){
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
+
     testCompile 'junit:junit:4.12'
     compile project(':mgopesa')
 }
 
 group = 'io.github.go_pesa'
-version = '0.0.3'
+version = '0.0.5'
 
 
 task generateSourcesJar(type: Jar) {

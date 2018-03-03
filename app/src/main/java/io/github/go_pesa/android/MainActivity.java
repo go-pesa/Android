@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import java.util.Map;
 
 import io.github.go_pesa.gopesa.Client;
 
@@ -29,7 +30,17 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Client client = new Client(this.getBaseContext());
-            client.stkPush(100,testNumber,"Hello","World");
+
+            Map<String,Object> response =  client.stkPush(100,testNumber,"Hello","World");
+
+            if (response.containsKey("thisMerchantRequestID")){
+                Log.e("Response","It is there");
+
+            }else{
+                Log.e("Response","NOT NOT");
+            }
+
+            Log.e("RESPONSE",response.get("CustomerMessage").toString());
 
         } catch (Exception e) {
             e.printStackTrace();
